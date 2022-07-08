@@ -3,32 +3,42 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="reset.css" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <form id="my-form">
-        <div>
-          <label for="amount">Amount:</label>
-          <input type="text" id="amount">
-        </div>
-        <div>
-          <label for="description">Description:</label>
-          <input type="text" id="description">
-        </div>
-        <div>
-            <label for="category">Choose a category:</label>
-                <select id="category">
-                    <option value="food">Food</option>
-                    <option value="fuel">Fuel</option>
-                    <option value="movie">Movie</option>
-                    <option value="electricity">Electricity</option>
-                    <option value="others">Others</option>
-                </select>
-        </div>
-        <input class="btn" type="submit" value="Add expense">
-      </form>
-
-      <ul id="expenses"></ul>
+    <div class="container">
+        <form id="my-form" >
+            <div class="input-container">
+                <div class="amount">
+                  <label for="amount">Amount:</label>
+                  <input type="text" id="amount">
+                </div>
+                <div class="des">
+                  <label for="description">Description:</label>
+                  <input type="text" id="description">
+                </div>
+                <div>
+                    <label for="category" class="cat">Category:</label>
+                        <select id="category">
+                            <option value="food">Food</option>
+                            <option value="fuel">Fuel</option>
+                            <option value="movie">Movie</option>
+                            <option value="electricity">Electricity</option>
+                            <option value="others">Others</option>
+                        </select>
+                </div>
+            </div>
+            <!-- <input class="btn" type="submit" value="Add expense" > -->
+            <button class="btn">Add Expense</button>
+          </form>
+    
+          <ul id="expenses"></ul>  
+    </div>
     <script src="index.js"></script>
 </body>
 </html>

@@ -1,0 +1,49 @@
+body{
+    /* background-color: aqua; */
+    font-family: 'Comfortaa', cursive;
+}
+.container{
+    border: 1px solid transparent;
+    margin: 4rem;
+}
+.input-container{
+    display: flex;
+    justify-content: space-evenly;
+    border: 1px solid salmon;
+    margin-top: 2rem;
+    padding: 2rem 1rem;
+}
+.amount,
+.des,
+.cat{
+    font-size: 1.5rem;
+}
+.amount input,
+.des input{
+    padding-top: 0.6rem;
+}
+.btn{
+    margin-left: 38rem;
+    margin-top: 1.2rem;
+    font-family: 'Comfortaa', cursive;
+    padding: 0.8rem;
+    border: 1px solid salmon;
+    border-radius: 0.5rem;
+    color: red;
+}
+.btn:hover{
+    background-color: red;
+    color: antiquewhite;
+}
+
+.list{
+    /* background-color: blueviolet; */
+    margin-top: 1rem;
+    width: 40rem;
+    padding: 1.2rem;
+    border: 1.2px solid black;
+    border-radius: 15px;
+}
+.list:hover{
+    background-color: aquamarine;
+}
