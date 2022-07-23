@@ -22,13 +22,19 @@ function onSubmit(e) {
       amount: amountInput.value,
       description: descriptionInput.value,
       category: categoryInput.value,
-      id: Date.now(),
     };
 
-    if (expenseArr == null) expenseArr = [];
-    expenseArr.push(expenseDetails);
-
-    localStorage.setItem("allExpenses", JSON.stringify(expenseArr));
+    axios
+      .post(
+        "https://crudcrud.com/api/cac447c4e99a4cdebc678fa4bdf04d81/expenseTracker",
+        expenseDetails
+      )
+      .then(function sucess(msg) {
+        console.log(msg);
+      })
+      .catch(function failure(msg) {
+        console.log(msg);
+      });
 
     displayDetails();
 
@@ -40,12 +46,13 @@ function onSubmit(e) {
 
 window.addEventListener("load", displayDetails);
 
-function displayDetails() {
+async function displayDetails() {
+  let response = await axios.get(
+    "https://crudcrud.com/api/cac447c4e99a4cdebc678fa4bdf04d81/expenseTracker"
+  );
+  let temp = await response.data;
+  console.log(temp, "data from fetch");
   expenseList.innerHTML = "";
-
-  let temp = JSON.parse(localStorage.getItem("allExpenses"));
-  expenseArr = temp;
-  console.log(temp);
 
   temp
     ? temp.forEach((element) => {
@@ -67,20 +74,20 @@ function displayDetails() {
         li.appendChild(deleteBtn);
         li.appendChild(editBtn);
 
-        deleteBtn.addEventListener("click", () => deleteFunction(element.id));
-        editBtn.addEventListener("click", () => editFunction(element.id));
+        deleteBtn.addEventListener("click", () => deleteFunction(element));
+        editBtn.addEventListener("click", () => editFunction(element));
 
         expenseList.appendChild(li);
       })
     : "";
 }
 
-function editFunction(id) {
-  let toEdit = expenseArr.filter((element) => element.id == id);
+function editFunction(item) {
+  // let toEdit = expenseArr.filter((element) => element.id == id);
 
-  let newAmount = toEdit[0].amount;
-  let newDescription = toEdit[0].description;
-  let newCategory = toEdit[0].category;
+  let newAmount = item.amount;
+  let newDescription = item.description;
+  let newCategory = item.category;
 
   let newArr = expenseArr.filter((element) => element.id != id);
 
