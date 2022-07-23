@@ -6,6 +6,8 @@ let expenseList = document.querySelector("#expenses");
 
 let expenseArr = [];
 
+let url = "https://crudcrud.com/api/cac447c4e99a4cdebc678fa4bdf04d81";
+
 myForm.addEventListener("submit", onSubmit);
 
 function onSubmit(e) {
@@ -25,10 +27,7 @@ function onSubmit(e) {
     };
 
     axios
-      .post(
-        "https://crudcrud.com/api/cac447c4e99a4cdebc678fa4bdf04d81/expenseTracker",
-        expenseDetails
-      )
+      .post(`${url}/expenseTracker`, expenseDetails)
       .then(function sucess(msg) {
         console.log(msg);
       })
@@ -47,16 +46,14 @@ function onSubmit(e) {
 window.addEventListener("load", displayDetails);
 
 async function displayDetails() {
-  let response = await axios.get(
-    "https://crudcrud.com/api/cac447c4e99a4cdebc678fa4bdf04d81/expenseTracker"
-  );
+  let response = await axios.get(`${url}/expenseTracker`);
   let temp = await response.data;
   console.log(temp, "data from fetch");
   expenseList.innerHTML = "";
 
   temp
     ? temp.forEach((element) => {
-        const li = document.createElement("li");
+        let li = document.createElement("li");
         li.className = "list";
         li.appendChild(
           document.createTextNode(
@@ -79,9 +76,10 @@ async function displayDetails() {
 
         expenseList.appendChild(li);
       })
-    : "";
+    : "Loading";
 }
 
+// Handle edit items
 function editFunction(item) {
   // let toEdit = expenseArr.filter((element) => element.id == id);
 
@@ -99,8 +97,15 @@ function editFunction(item) {
   categoryInput.value = newCategory;
 }
 
-function deleteFunction(id) {
-  let newArr = expenseArr.filter((element) => element.id != id);
-  localStorage.setItem("allExpenses", JSON.stringify(newArr));
-  displayDetails();
+// ------------ Handle delete Items
+function deleteFunction(item) {
+  axios
+    .delete(`${url}/expenseTracker/${item._id}`)
+    .then(function sucess(msg) {
+      console.log(msg);
+      displayDetails();
+    })
+    .catch(function failure(msg) {
+      console.log(msg);
+    });
 }
