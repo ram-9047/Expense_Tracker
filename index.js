@@ -29,12 +29,11 @@ function onSubmit(e) {
       .post(`${url}/expenseTracker`, expenseDetails)
       .then(function sucess(msg) {
         console.log(msg);
+        displayDetails();
       })
       .catch(function failure(msg) {
         console.log(msg);
       });
-
-    displayDetails();
 
     amountInput.value = "";
     descriptionInput.value = "";
@@ -43,6 +42,7 @@ function onSubmit(e) {
 }
 
 async function displayDetails() {
+  console.log("handle dislay details");
   let response = await axios.get(`${url}/expenseTracker`);
   let temp = await response.data;
   console.log(temp, "data from fetch");
@@ -69,6 +69,7 @@ async function displayDetails() {
         li.appendChild(editBtn);
 
         deleteBtn.addEventListener("click", () => deleteFunction(element._id));
+        
         editBtn.addEventListener("click", () => editFunction(element));
 
         expenseList.appendChild(li);
@@ -78,12 +79,14 @@ async function displayDetails() {
 
 // Handle edit items
 function editFunction(item) {
-  console.log(item);
+  // console.log(item);
   let tempItem = item;
   amountInput.value = tempItem.amount;
   descriptionInput.value = tempItem.description;
   categoryInput.value = tempItem.category;
   deleteFunction(item._id);
+  console.log("calleing display details");
+  // displayDetails();
 }
 
 // ------------ Handle delete Items
