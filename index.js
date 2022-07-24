@@ -4,10 +4,9 @@ let descriptionInput = document.querySelector("#description");
 let categoryInput = document.querySelector("#category");
 let expenseList = document.querySelector("#expenses");
 
-let expenseArr = [];
-
 let url = "https://crudcrud.com/api/cac447c4e99a4cdebc678fa4bdf04d81";
 
+window.addEventListener("DOMContentLoaded", () => displayDetails());
 myForm.addEventListener("submit", onSubmit);
 
 function onSubmit(e) {
@@ -43,8 +42,6 @@ function onSubmit(e) {
   }
 }
 
-window.addEventListener("load", displayDetails);
-
 async function displayDetails() {
   let response = await axios.get(`${url}/expenseTracker`);
   let temp = await response.data;
@@ -71,7 +68,7 @@ async function displayDetails() {
         li.appendChild(deleteBtn);
         li.appendChild(editBtn);
 
-        deleteBtn.addEventListener("click", () => deleteFunction(element));
+        deleteBtn.addEventListener("click", () => deleteFunction(element._id));
         editBtn.addEventListener("click", () => editFunction(element));
 
         expenseList.appendChild(li);
@@ -81,26 +78,19 @@ async function displayDetails() {
 
 // Handle edit items
 function editFunction(item) {
-  // let toEdit = expenseArr.filter((element) => element.id == id);
-
-  let newAmount = item.amount;
-  let newDescription = item.description;
-  let newCategory = item.category;
-
-  let newArr = expenseArr.filter((element) => element.id != id);
-
-  localStorage.setItem("allExpenses", JSON.stringify(newArr));
-  displayDetails();
-
-  amountInput.value = newAmount;
-  descriptionInput.value = newDescription;
-  categoryInput.value = newCategory;
+  console.log(item);
+  let tempItem = item;
+  amountInput.value = tempItem.amount;
+  descriptionInput.value = tempItem.description;
+  categoryInput.value = tempItem.category;
+  deleteFunction(item._id);
 }
 
 // ------------ Handle delete Items
-function deleteFunction(item) {
+function deleteFunction(id) {
+  console.log(id);
   axios
-    .delete(`${url}/expenseTracker/${item._id}`)
+    .delete(`${url}/expenseTracker/${id}`)
     .then(function sucess(msg) {
       console.log(msg);
       displayDetails();
