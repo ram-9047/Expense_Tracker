@@ -67,7 +67,6 @@ async function displayDetails() {
         li.appendChild(editBtn);
 
         deleteBtn.addEventListener("click", () => deleteFunction(element._id));
-
         editBtn.addEventListener("click", () => editFunction(element));
 
         expenseList.appendChild(li);
