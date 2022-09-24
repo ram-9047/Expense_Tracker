@@ -4,12 +4,13 @@ let descriptionInput = document.querySelector("#description");
 let categoryInput = document.querySelector("#category");
 let expenseList = document.querySelector("#expenses");
 
-let url = "https://crudcrud.com/api/cac447c4e99a4cdebc678fa4bdf04d81";
+let url = "https://crudcrud.com/api/93954ca845884e9598910097bceef5c2";
 
-window.addEventListener("DOMContentLoaded", () => displayDetails());
 myForm.addEventListener("submit", onSubmit);
 
-function onSubmit(e) {
+window.addEventListener("DOMContentLoaded", () => displayDetails());
+
+async function onSubmit(e) {
   e.preventDefault();
 
   if (
@@ -25,16 +26,12 @@ function onSubmit(e) {
       category: categoryInput.value,
     };
 
-    axios
-      .post(`${url}/expenseTracker`, expenseDetails)
-      .then(function sucess(msg) {
-        console.log(msg);
-      })
-      .catch(function failure(msg) {
-        console.log(msg);
-      });
-
-    displayDetails();
+    try {
+      await axios.post(`${url}/expenseTracker`, expenseDetails);
+      displayDetails();
+    } catch (error) {
+      console.log(error);
+    }
 
     amountInput.value = "";
     descriptionInput.value = "";
@@ -43,6 +40,7 @@ function onSubmit(e) {
 }
 
 async function displayDetails() {
+  console.log("handle dislay details");
   let response = await axios.get(`${url}/expenseTracker`);
   let temp = await response.data;
   console.log(temp, "data from fetch");
@@ -69,6 +67,7 @@ async function displayDetails() {
         li.appendChild(editBtn);
 
         deleteBtn.addEventListener("click", () => deleteFunction(element._id));
+
         editBtn.addEventListener("click", () => editFunction(element));
 
         expenseList.appendChild(li);
@@ -78,24 +77,23 @@ async function displayDetails() {
 
 // Handle edit items
 function editFunction(item) {
-  console.log(item);
+  // console.log(item);
   let tempItem = item;
   amountInput.value = tempItem.amount;
   descriptionInput.value = tempItem.description;
   categoryInput.value = tempItem.category;
   deleteFunction(item._id);
+  // console.log("calleing display details");
+  // displayDetails();
 }
 
 // ------------ Handle delete Items
-function deleteFunction(id) {
+async function deleteFunction(id) {
   console.log(id);
-  axios
-    .delete(`${url}/expenseTracker/${id}`)
-    .then(function sucess(msg) {
-      console.log(msg);
-      displayDetails();
-    })
-    .catch(function failure(msg) {
-      console.log(msg);
-    });
+  try {
+    await axios.delete(`${url}/expenseTracker/${id}`);
+    await displayDetails();
+  } catch (error) {
+    console.log(error);
+  }
 }
