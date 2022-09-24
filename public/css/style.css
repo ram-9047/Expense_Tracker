@@ -2,6 +2,11 @@ body{
     /* background-color: aqua; */
     font-family: 'Comfortaa', cursive;
 }
+.title{
+    font-size: 4.5rem;
+    margin-left: 25rem;
+    margin-top: 2rem;
+}
 .container{
     border: 1px solid transparent;
     margin: 4rem;
