@@ -4,7 +4,8 @@ let descriptionInput = document.querySelector("#description");
 let categoryInput = document.querySelector("#category");
 let expenseList = document.querySelector("#expenses");
 
-let url = "https://crudcrud.com/api/93954ca845884e9598910097bceef5c2";
+// let url = "https://crudcrud.com/api/93954ca845884e9598910097bceef5c2";
+let url = "http://localhost:3030";
 
 myForm.addEventListener("submit", onSubmit);
 
@@ -27,7 +28,7 @@ async function onSubmit(e) {
     };
 
     try {
-      await axios.post(`${url}/expenseTracker`, expenseDetails);
+      await axios.post(`${url}/add-item`, expenseDetails);
       displayDetails();
     } catch (error) {
       console.log(error);
@@ -41,7 +42,7 @@ async function onSubmit(e) {
 
 async function displayDetails() {
   console.log("handle dislay details");
-  let response = await axios.get(`${url}/expenseTracker`);
+  let response = await axios.get(`${url}`);
   let temp = await response.data;
   console.log(temp, "data from fetch");
   expenseList.innerHTML = "";
@@ -66,31 +67,34 @@ async function displayDetails() {
         li.appendChild(deleteBtn);
         li.appendChild(editBtn);
 
-        deleteBtn.addEventListener("click", () => deleteFunction(element._id));
-        editBtn.addEventListener("click", () => editFunction(element));
+        deleteBtn.addEventListener("click", () => deleteFunction(element.id));
+        editBtn.addEventListener("click", () => editFunction(element.id));
 
         expenseList.appendChild(li);
       })
-    : "Loading";
+    : "<h2>Loading</h1>";
 }
 
 // Handle edit items
-function editFunction(item) {
-  // console.log(item);
-  let tempItem = item;
-  amountInput.value = tempItem.amount;
-  descriptionInput.value = tempItem.description;
-  categoryInput.value = tempItem.category;
-  deleteFunction(item._id);
-  // console.log("calleing display details");
-  // displayDetails();
+async function editFunction(itemId) {
+  // console.log(itemId);
+  try {
+    let editData = await axios.get(`${url}/edit-item/${itemId}`);
+    let data = editData.data;
+    console.log(data, "this data need to be updated");
+    amountInput.value = data.amount;
+    descriptionInput.value = data.description;
+    categoryInput.value = data.category;
+  } catch (error) {
+    console.log(error, "error in sending edit request");
+  }
 }
 
 // ------------ Handle delete Items
-async function deleteFunction(id) {
-  console.log(id);
+async function deleteFunction(itemId) {
+  // console.log(itemId);
   try {
-    await axios.delete(`${url}/expenseTracker/${id}`);
+    await axios.post(`${url}/delete-item/${itemId}`);
     await displayDetails();
   } catch (error) {
     console.log(error);
